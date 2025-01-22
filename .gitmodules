@@ -1,0 +1,6 @@
+[submodule "data/assets/config-server"]
+	path = data/assets/config-server
+	url = https://git.xeondev.com/wickedwaifus/wicked-waifus-config-server-files.git
+[submodule "data/assets/game-data"]
+	path = data/assets/game-data
+	url = https://git.xeondev.com/wickedwaifus/wicked-waifus-data.git

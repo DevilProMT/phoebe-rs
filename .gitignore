@@ -5,4 +5,5 @@
 /loginserver.toml
 /gateway.toml
 /gameserver.toml
-/shorekeeper-protocol/generated
+/wicked-waifus-protocol-internal/generated
+/wicked-waifus-protocol/generated

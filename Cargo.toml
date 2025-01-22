@@ -1,5 +1,5 @@
 [workspace]
-members = ["common", "config-server", "hotpatch-server", "login-server", "gateway-server", "gateway-server/kcp", "shorekeeper-database", "shorekeeper-http", "shorekeeper-protokey", "shorekeeper-protocol", "shorekeeper-protocol/shorekeeper-protocol-derive", "game-server", "shorekeeper-network", "shorekeeper-data"]
+members = ["wicked-waifus-commons", "wicked-waifus-config-server", "wicked-waifus-hotpatch-server", "wicked-waifus-login-server", "wicked-waifus-gateway-server", "wicked-waifus-gateway-server/kcp", "wicked-waifus-database", "wicked-waifus-http", "wicked-waifus-protokey", "wicked-waifus-protocol-internal", "wicked-waifus-game-server", "wicked-waifus-network", "wicked-waifus-data"]
 resolver = "2"
 
 [workspace.package]
@@ -20,12 +20,14 @@ sqlx = { version = "0.8.2", features = ["postgres", "runtime-tokio-rustls"] }
 aes = "0.8.4"
 cbc = { version = "0.1.2", features = ["alloc"] }
 cipher = "0.4.4"
+crc32fast = "1.4.2"
 rand = "0.8.5"
 rsa = { version = "0.9.6", features = ["pem"] }
 
 # Serialization
 serde = { version = "1.0.209", features = ["derive"] }
 serde_json = "1.0.128"
+serde_repr = "0.1.19"
 toml = "0.8.19"
 prost = "0.13.2"
 prost-build = "0.13.2"
@@ -38,22 +40,23 @@ rbase64 = "2.0.3"
 dashmap = "6.1.0"
 hex = "0.4.3"
 byteorder = "1.5.0"
-crc32fast = "1.4.2"
 
 # Tracing
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 
 # Internal
-kcp = { path = "gateway-server/kcp" }
-common = { path = "common" }
-shorekeeper-http = { path = "shorekeeper-http" }
-shorekeeper-data = { path = "shorekeeper-data" }
-shorekeeper-database = { path = "shorekeeper-database" }
-shorekeeper-network = { path = "shorekeeper-network" }
-shorekeeper-protocol = { path = "shorekeeper-protocol" }
-shorekeeper-protocol-derive = { path = "shorekeeper-protocol/shorekeeper-protocol-derive" }
-shorekeeper-protokey = { path = "shorekeeper-protokey" }
+kcp = { path = "wicked-waifus-gateway-server/kcp" }
+wicked-waifus-commons = { path = "wicked-waifus-commons" }
+wicked-waifus-http = { path = "wicked-waifus-http" }
+wicked-waifus-data = { path = "wicked-waifus-data" }
+wicked-waifus-database = { path = "wicked-waifus-database" }
+wicked-waifus-network = { path = "wicked-waifus-network" }
+wicked-waifus-protocol-internal = { path = "wicked-waifus-protocol-internal" }
+wicked-waifus-protokey = { path = "wicked-waifus-protokey" }
+
+wicked-waifus-protocol = { git = "https://git.xeondev.com/wickedwaifus/wicked-waifus-proto" }
+wicked-waifus-protocol-derive = { git = "https://git.xeondev.com/wickedwaifus/wicked-waifus-proto" }
 
 [profile.release]
 strip = true      # Automatically strip symbols from the binary.

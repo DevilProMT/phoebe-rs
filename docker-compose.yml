@@ -2,26 +2,26 @@ name: wicked-waifus-ps
 
 services:
   wicked-waifus-config-server:
-    image: wicked-waifus-config-server:1.4.0-SNAPSHOT
+    image: wicked-waifus-config-server:2.1.0-SNAPSHOT
     depends_on:
       wicked-waifus-postgres:
         condition: service_healthy
     ports:
       - '10001:10001'
     volumes:
-      - "./docker/configserver.toml:/app/configserver.toml"
-      - "./assets/config:/app/assets/config"
+      - "./data/docker/configserver.toml:/app/configserver.toml"
+      - "./data/assets/config:/app/assets/config"
   wicked-waifus-login-server:
-    image: wicked-waifus-login-server:1.4.0-SNAPSHOT
+    image: wicked-waifus-login-server:2.1.0-SNAPSHOT
     depends_on:
       wicked-waifus-postgres:
         condition: service_healthy
     ports:
       - '5500:5500'
     volumes:
-      - "./docker/loginserver.toml:/app/loginserver.toml"
+      - "./data/docker/loginserver.toml:/app/loginserver.toml"
   wicked-waifus-gateway-server:
-    image: wicked-waifus-gateway-server:1.4.0-SNAPSHOT
+    image: wicked-waifus-gateway-server:2.1.0-SNAPSHOT
     depends_on:
       wicked-waifus-postgres:
         condition: service_healthy
@@ -30,9 +30,9 @@ services:
       #      - '10003:10003'
       - '7777:7777/udp'
     volumes:
-      - "./docker/gateway.toml:/app/gateway.toml"
+      - "./data/docker/gateway.toml:/app/gateway.toml"
   wicked-waifus-game-server:
-    image: wicked-waifus-game-server:1.4.0-SNAPSHOT
+    image: wicked-waifus-game-server:2.1.0-SNAPSHOT
     depends_on:
       wicked-waifus-postgres:
         condition: service_healthy
@@ -40,8 +40,8 @@ services:
 #    ports:
 #      - '10004:10004'
     volumes:
-      - "./docker/gameserver.toml:/app/gameserver.toml"
-      - "./assets/logic:/app/assets/logic"
+      - "./data/docker/gameserver.toml:/app/gameserver.toml"
+      - "./data/assets/game-data:/app/data/assets/game-data"
   wicked-waifus-postgres:
     image: postgres:16.4-alpine3.20
     user: postgres
@@ -56,7 +56,7 @@ services:
     environment:
       - "POSTGRES_PASSWORD=toor"
     volumes:
-      - "./docker/postgres/scripts:/docker-entrypoint-initdb.d"
+      - "./data/docker/postgres/scripts:/docker-entrypoint-initdb.d"
       - wicked-waifus-postgres-vol:/var/lib/postgresql/data
 volumes:
   wicked-waifus-postgres-vol:

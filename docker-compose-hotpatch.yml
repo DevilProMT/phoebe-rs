@@ -2,12 +2,12 @@ name: wicked-waifus-ps
 
 services:
   wicked-waifus-hotpatch-server:
-    image: wicked-waifus-hotpatch-server:1.4.0-SNAPSHOT
+    image: wicked-waifus-hotpatch-server:2.1.0-SNAPSHOT
     depends_on:
       wicked-waifus-postgres:
         condition: service_healthy
     ports:
       - '10002:10002'
     volumes:
-      - "./docker/hotpatch.toml:/app/hotpatch.toml"
-      - "./assets/hotpatch:/app/assets/hotpatch"
+      - "./data/docker/hotpatch.toml:/app/hotpatch.toml"
+      - "./data/assets/hotpatch-server:/app/assets/hotpatch"
