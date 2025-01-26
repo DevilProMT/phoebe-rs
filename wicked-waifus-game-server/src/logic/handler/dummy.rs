@@ -52,4 +52,11 @@ dummy_handler! {
     PhantomItem;
     ValidTimeItem;
     ItemExchangeInfo;
+    EntityPatrolStop;
+    PayShopInfo;
+    InitRange;
+    Activity;
+    BattlePass;
+    SlashAndTowerInfo;
+    Advice;
 }

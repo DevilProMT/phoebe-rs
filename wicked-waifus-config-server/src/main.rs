@@ -1,25 +1,19 @@
+use std::fs;
 use std::sync::LazyLock;
 
 use anyhow::Result;
-use serde::Deserialize;
 
 use wicked_waifus_commons::config_util::{self, TomlConfig};
+use serde::Deserialize;
 use wicked_waifus_http::{
-    Application,
     config::{AesSettings, NetworkSettings},
+    Application,
 };
-
-#[derive(Deserialize)]
-pub struct ServeConfig {
-    pub serve_web_path: String,
-    pub serve_dir_path: String,
-}
 
 #[derive(Deserialize)]
 pub struct ServerConfig {
     pub network: NetworkSettings,
     pub encryption: AesSettings,
-    pub serve: ServeConfig,
 }
 
 impl TomlConfig for ServerConfig {
@@ -32,20 +26,20 @@ async fn main() -> Result<()> {
         LazyLock::new(|| config_util::load_or_create("configserver.toml"));
 
     ::wicked_waifus_commons::splash::print_splash();
-    ::wicked_waifus_commons::logging::init_axum(::tracing::Level::DEBUG);
-
-    tracing::debug!(
-        "Serving files from {} at {}",
-        &CONFIG.serve.serve_web_path,
-        &CONFIG.serve.serve_dir_path
-    );
+    ::wicked_waifus_commons::logging::init(::tracing::Level::DEBUG);
 
     Application::new()
-        .serve_dir(&CONFIG.serve.serve_web_path, &CONFIG.serve.serve_dir_path)
+        .get("/index.json", get_index)
         .with_encryption(&CONFIG.encryption)
-        .with_logger()
         .serve(&CONFIG.network)
         .await?;
 
     Ok(())
+}
+
+async fn get_index() -> &'static str {
+    static INDEX: LazyLock<String> =
+        LazyLock::new(|| fs::read_to_string("index.json").unwrap());
+
+    &*INDEX
 }

@@ -1,5 +1,5 @@
 [network]
-http_addr = "0.0.0.0:5500"
+http_addr = "0.0.0.0:5501"
 
 [gateway]
 host = "127.0.0.1"
@@ -9,4 +9,4 @@ port = 7777
 host = "localhost:5432"
 user_name = "postgres"
 password = ""
-db_name = "shorekeeper"
+db_name = "phoebe"

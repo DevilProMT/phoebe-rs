@@ -1,9 +1,11 @@
 .idea
 /target
-/hotpatch.toml
 /configserver.toml
 /loginserver.toml
 /gateway.toml
 /gameserver.toml
 /wicked-waifus-protocol-internal/generated
 /wicked-waifus-protocol/generated
+/test
+/wicked-waifus-protocol-derive
+/wicked-waifus-protocol

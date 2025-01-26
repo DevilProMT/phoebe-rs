@@ -1,7 +1,7 @@
 use wicked_waifus_data::BasePropertyData;
 use wicked_waifus_protocol::{
     entity_component_pb::ComponentPb, AttrData, AttributeComponentPb, EAttributeType,
-    EntityComponentPb, LivingStatus,
+    EntityComponentPb, LivingStatus, EEntityType,
 };
 use std::collections::HashMap;
 
@@ -20,6 +20,29 @@ impl Component for Attribute {
             LivingStatus::Dead
         })
         .into();
+
+        let mut local_attr_map = self.attr_map.clone();
+
+        if pb.entity_type == EEntityType::Player as i32 {
+
+            if let Some((base, _)) = local_attr_map.get_mut(&EAttributeType::ElementEnergy) {
+                *base = 10000;
+            }
+            if let Some((base, _)) = local_attr_map.get_mut(&EAttributeType::Energy) {
+                *base = 0;
+            }
+            if let Some((base, _)) = local_attr_map.get_mut(&EAttributeType::EnergyMax) {
+                *base = 0;
+            }
+            // if let Some((base, _)) = local_attr_map.get_mut(&EAttributeType::CdReduse) {
+            //     *base = 0;
+            // }
+        }
+
+        let attr_map_ptr = self as *const _ as *mut Self;
+        unsafe {
+            (*attr_map_ptr).attr_map = local_attr_map;
+        }
 
         pb.component_pbs.push(EntityComponentPb {
             component_pb: Some(ComponentPb::AttributeComponent(

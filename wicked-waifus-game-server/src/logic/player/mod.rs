@@ -88,7 +88,7 @@ impl Player {
             open_pkg: (0..8).collect(),
         });
         // TODO: [WWPS-1] Real implementation should fetch completed / uncompleted from db, lets return completed
-        for i in 0..40 {
+        for i in 0..80 {
             self.notify(MapUnlockFieldNotify {
                 field_id: i,
             });
@@ -422,7 +422,7 @@ impl Player {
                 .role_list
                 .iter()
                 .map(|(_, role)| role.to_protobuf())
-                .take(3) // TODO: There is a bug we are investigating with several resonators, this is a workaround
+                //.take(3) // TODO: There is a bug we are investigating with several resonators, this is a workaround
                 .collect(),
         }
     }
@@ -440,7 +440,7 @@ impl Player {
     pub fn respond(&self, content: impl ProtocolUnit, rpc_id: u16) {
         if let Some(session) = self.session.as_ref() {
             let data = content.encode_to_vec().into_boxed_slice();
-            tracing::debug!("Push to gateway MSG_ID: {}, LEN: {}, DATA: {}", content.get_message_id(), data.len(), hex::encode(&data));
+            // tracing::debug!("Push to gateway MSG_ID: {}, LEN: {}, DATA: {}", content.get_message_id(), data.len(), hex::encode(&data));
             let response = Message::Response {
                 sequence_number: 0,
                 message_id: content.get_message_id(),

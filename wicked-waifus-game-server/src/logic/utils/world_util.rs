@@ -28,14 +28,21 @@ macro_rules! create_player_entity_pb {
         general_buffs.add_generic_permanent_buffs();
 
         for role in $role_list {
-             // Once per character buffs are implemented, add a mut on role_buffs
-            let role_buffs = general_buffs.clone();
-
             let role_id: i32 = role.role_id;
             let base_property = base_property_data::iter()
                 .find(|d| d.id == role_id)
                 .expect("macro create_role_entity_pb: Base property data not found");
 
+            if let Some(custom_buff) = wicked_waifus_data::resonator_data::iter()
+                .find(|d| d.id == role_id)
+                {
+                    for buff_id in &custom_buff.buffs {
+                        general_buffs.add_custom_buffs(role_id,*buff_id);
+                    }
+                }
+
+            // Once per character buffs are implemented, add a mut on role_buffs
+            let role_buffs = general_buffs.clone();
             let entity = $world
                 .create_entity(role_id, EEntityType::Player.into(), $cur_map_id)
                 .with(ComponentContainer::PlayerEntityMarker(PlayerEntityMarker))
@@ -103,6 +110,14 @@ pub fn add_player_entities(player: &Player) {
 
     if world.active_entity_empty() {
         for role in role_vec {
+            if let Some(custom_buff) = wicked_waifus_data::resonator_data::iter()
+                .find(|d| d.id == role.role_id)
+                {
+                    for buff_id in &custom_buff.buffs {
+                        general_buffs.add_custom_buffs(role.role_id,*buff_id);
+                    }
+                }
+
             // Once per character buffs are implemented, add a mut on role_buffs
             let role_buffs = general_buffs.clone();
             let entity = world

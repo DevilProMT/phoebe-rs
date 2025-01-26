@@ -200,7 +200,6 @@ handle_request! {
     // TODO: Implement all this properly, workaround for game enter
     // Role
     RoleVisionRecommendData;
-    RoleVisionRecommendData;
     RoleVisionRecommendAttr;
     PlayerMotion;
 
@@ -230,6 +229,14 @@ handle_request! {
     UpdateVoxelEnv;
     SimpleTrackReportAsync;
     TowerSeasonUpdate;
+    
+    EntityPatrolStop;
+    PayShopInfo;
+    InitRange;
+    Activity;
+    BattlePass;
+    SlashAndTowerInfo;
+    Advice;
 
     // Friend
     FriendAll;

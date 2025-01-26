@@ -26,13 +26,12 @@ impl PlayerFunc {
     }
 
     pub fn build_func_open_notify(&self) -> FuncOpenNotify {
+        let func_map = function_condition_data::iter();
         FuncOpenNotify {
-            func: self
-                .func_map
-                .iter()
-                .map(|(id, flag)| Function {
-                    id: *id,
-                    flag: *flag,
+            func: func_map
+                .map(|func| Function {
+                    id: func.function_id,
+                    flag: 2,
                 })
                 .collect(),
         }

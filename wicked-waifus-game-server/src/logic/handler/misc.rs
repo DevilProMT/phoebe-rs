@@ -1,5 +1,5 @@
 use wicked_waifus_protocol::{
-    ErrorCode, Zih, InputSettingRequest, InputSettingResponse, InputSettingUpdateRequest,
+    ErrorCode, InputSettingRequest, InputSettingResponse, InputSettingUpdateRequest,
     InputSettingUpdateResponse, LanguageSettingUpdateRequest, LanguageSettingUpdateResponse,
     ServerPlayStationPlayOnlyStateRequest, ServerPlayStationPlayOnlyStateResponse, VersionInfoPush,
 };
@@ -9,10 +9,8 @@ use crate::logic::player::Player;
 pub fn on_input_setting_request(
     _: &Player,
     _: InputSettingRequest,
-    response: &mut InputSettingResponse,
-) {
-    response.zih = Some(Zih::default());
-}
+    _: &mut InputSettingResponse,
+) {}
 
 pub fn on_input_setting_update_request(
     _: &Player,

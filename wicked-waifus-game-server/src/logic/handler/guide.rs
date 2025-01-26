@@ -2,12 +2,17 @@ use wicked_waifus_protocol::{ErrorCode, GuideInfoRequest, GuideInfoResponse, Gui
 
 use crate::logic::player::Player;
 
+use wicked_waifus_data::{guide_group_data};
+
 pub fn on_guide_info_request(
-    player: &Player,
+    _: &Player,
     _: GuideInfoRequest,
     response: &mut GuideInfoResponse,
 ) {
-    response.guide_group_finish_list = player.guides.finished_guides.clone();
+    let guide_group_data = guide_group_data::iter();
+    response.guide_group_finish_list = guide_group_data
+        .map(|group| group.id)
+        .collect();
 }
 
 pub fn on_guide_trigger_request(

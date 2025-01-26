@@ -1,5 +1,5 @@
 [workspace]
-members = ["wicked-waifus-commons", "wicked-waifus-config-server", "wicked-waifus-hotpatch-server", "wicked-waifus-login-server", "wicked-waifus-gateway-server", "wicked-waifus-gateway-server/kcp", "wicked-waifus-database", "wicked-waifus-http", "wicked-waifus-protokey", "wicked-waifus-protocol-internal", "wicked-waifus-game-server", "wicked-waifus-network", "wicked-waifus-data"]
+members = ["wicked-waifus-commons", "wicked-waifus-config-server", "wicked-waifus-login-server", "wicked-waifus-gateway-server", "wicked-waifus-gateway-server/kcp", "wicked-waifus-database", "wicked-waifus-http", "wicked-waifus-protokey", "wicked-waifus-protocol-internal", "wicked-waifus-game-server", "wicked-waifus-network", "wicked-waifus-data"]
 resolver = "2"
 
 [workspace.package]

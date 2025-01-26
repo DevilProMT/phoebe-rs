@@ -4,11 +4,14 @@ use wicked_waifus_protocol::entity_component_pb::ComponentPb;
 use crate::logic::ecs::component::Component;
 use crate::logic::utils::buff_util::add_buff_to_manager;
 
+use std::collections::HashMap;
+
 #[derive(Default, Clone)]
 pub struct FightBuff {
     pub fight_buff_infos: Vec<FightBuffInformation>,
     pub permanent_fight_buff_infos: Vec<FightBuffInformation>,
     pub list_buff_effect_cd: Vec<BuffEffectCd>,
+    pub custom_fight_buff_infos: HashMap<i32, Vec<FightBuffInformation>>,
 }
 
 impl FightBuff {
@@ -59,6 +62,28 @@ impl FightBuff {
         })
     }
 
+    pub fn add_custom_buff(&mut self, role_id: i32, id: i64) {
+        self.custom_fight_buff_infos
+            .entry(role_id)
+            .or_insert_with(Vec::new)
+            .push(FightBuffInformation {
+                handle_id: 1,
+                buff_id: id,
+                level: 1,
+                stack_count: 1,
+                instigator_id: 0,
+                entity_id: 0,
+                apply_type: 0,
+                duration: -1.0,
+                left_duration: -1.0,
+                context: vec![],
+                is_active: true,
+                server_id: 1,
+                message_id: 1,
+            });
+    }
+    
+
     pub fn add_generic_permanent_buffs(&mut self) {
         self.add_permanent_buff(3003); // Remove wall run prohibition
         self.add_permanent_buff(3004); // Remove gliding prohibition
@@ -68,6 +93,11 @@ impl FightBuff {
         self.add_permanent_buff(1216); // Reduce stamina while flying down in sprint
         self.add_permanent_buff(640012051); // Allow flying
     }
+
+    pub fn add_custom_buffs(&mut self, role_id: i32, buff_id: i64){
+        self.add_custom_buff(role_id,buff_id);
+    }
+
 }
 
 impl Component for FightBuff {
@@ -87,11 +117,24 @@ impl Component for FightBuff {
         // Fix Instigator and Entity Id for permanent buffs
         let mut fight_buff_infos = self.fight_buff_infos.clone();
         let mut permanent_buffs = self.permanent_fight_buff_infos.clone();
+        let mut custom_buffs = self.custom_fight_buff_infos.clone();
         for buf in &mut permanent_buffs {
             buf.instigator_id = pb.id;
             buf.entity_id = pb.id;
             add_buff_to_manager(buf);
             fight_buff_infos.push(buf.clone());
+        }
+
+        // Add Custom Buff
+        for (role_id, mut buffs) in custom_buffs {
+            if pb.config_id == role_id {
+                for buf in &mut buffs {
+                    buf.instigator_id = pb.id;
+                    buf.entity_id = pb.id;
+                    add_buff_to_manager(buf);
+                    fight_buff_infos.push(buf.clone());
+                }
+            }
         }
 
         // Add new FightBuffComponent

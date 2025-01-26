@@ -2754,19 +2754,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "wicked-waifus-hotpatch-server"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "serde",
- "tokio",
- "toml",
- "tracing",
- "wicked-waifus-commons",
- "wicked-waifus-http",
-]
-
-[[package]]
 name = "wicked-waifus-http"
 version = "0.1.0"
 dependencies = [
