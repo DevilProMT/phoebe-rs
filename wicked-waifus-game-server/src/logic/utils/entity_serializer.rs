@@ -20,6 +20,9 @@ pub fn build_scene_add_on_init_data(player: &Player) -> PlayerSceneAoiData {
                 Ok(EEntityType::Player) => {
                     res_map = (EEntityType::Player, entity_id);
                 }
+                Ok(EEntityType::Monster) => {
+                    res_map = (EEntityType::Monster, entity_id);
+                }
                 _ => {
                     res_map = (EEntityType::default(), -1);
                 }
@@ -55,6 +58,28 @@ pub fn build_scene_add_on_init_data(player: &Player) -> PlayerSceneAoiData {
                     );
 
                     if world.get_entity(config_id).entity_type == EEntityType::Player as i32 {
+                        let mut pb = EntityPb {
+                            id: entity_id as i64,
+                            ..Default::default()
+                        };
+                        world
+                            .get_entity_components(entity_id)
+                            .into_iter()
+                            .for_each(|comp| comp.set_pb_data(&mut pb));
+
+                        aoi_data.entities.push(pb);
+                    }
+                }
+                EEntityType::Monster => {
+                    let config_id = world.get_config_id(entity_id);
+                    modify_component!(
+                        world.get_entity_components(entity_id),
+                        Visibility,
+                        |vis: &mut Visibility| {
+                            vis.0 = false;
+                        }
+                    );
+                    if world.get_entity(config_id).entity_type == EEntityType::Monster as i32 {
                         let mut pb = EntityPb {
                             id: entity_id as i64,
                             ..Default::default()

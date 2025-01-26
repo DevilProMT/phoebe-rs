@@ -15,6 +15,8 @@ mod state_tag;
 mod tag;
 mod autonomous;
 mod interact;
+mod summoner;
+mod concomitant;
 
 pub use attribute::Attribute;
 pub use entity_config::EntityConfig;
@@ -33,3 +35,5 @@ pub use state_tag::StateTag;
 pub use tag::Tag;
 pub use autonomous::Autonomous;
 pub use interact::Interact;
+pub use summoner::Summoner;
+pub use concomitant::Concomitant;

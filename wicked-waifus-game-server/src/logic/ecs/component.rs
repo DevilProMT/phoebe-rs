@@ -40,6 +40,8 @@ impl_component_container! {
     Tag;
     Autonomous;
     Interact;
+    Summoner;
+    Concomitant;
 }
 
 pub trait Component {
