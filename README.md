@@ -1,6 +1,9 @@
-# Camellya
+# Phoebe
 
 ![Screenshot](screenshot.png)
+
+## NOTE
+I am not the original author of this project. It is a fork of https://git.xeondev.com/wickedwaifus/wicked-waifus-rs.
 
 ## About
 **Wicked Waifus is an open-source Wuthering Waves server emulator written in Rust**. 
@@ -18,8 +21,8 @@ It also implements **performant and extensible ECS** for emulation of the game w
 ##### a) building from sources
 
 ```sh
-git clone --recursive https://git.xeondev.com/wickedwaifus/wicked-waifus-rs.git
-cd wicked-waifus-rs
+git clone --recursive  https://github.com/DevilProMT/phoebe-rs.git
+cd phoebe-rs
 cargo run --bin wicked-waifus-config-server
 cargo run --bin wicked-waifus-login-server
 cargo run --bin wicked-waifus-gateway-server
@@ -59,18 +62,22 @@ You have to specify credentials for **PostgreSQL**<br>
 host = "localhost:5432"
 user_name = "postgres"
 password = ""
-db_name = "wicked_waifus_db"
+db_name = "phoebe"
 ```
-##### NOTE: don't forget to create database with specified `db_name` (default: `wicked_waifus_db`). For example, you can do so with PgAdmin.
+##### NOTE: don't forget to create database with specified `db_name` (default: `phoebe`). For example, you can do so with PgAdmin.
 
 #### Data
 The data files: Logic JSON collections (`data/assets/game-data/BinData`) are included in this repository. Keep in mind that you need to have the `data` subdirectory in current working directory.
 
 #### Connecting
-You have to download client of Wuthering Waves Beta 1.3, apply the [wicked-waifus-win-patch](https://git.xeondev.com/wickedwaifus/wicked-waifus-win-patch/releases) and add necessary `.pak` files, which you can get here: [wicked-waifus-pak](https://git.xeondev.com/wickedwaifus/wicked-waifus-pak)
+You have to download client of Wuthering Waves Beta 2.1, apply the [wicked-waifus-win-patch](https://git.xeondev.com/wickedwaifus/wicked-waifus-win-patch/releases) and add necessary `.pak` files, which you can get here: [wicked-waifus-pak](https://git.xeondev.com/wickedwaifus/wicked-waifus-pak)
 
 ### Troubleshooting
 [Visit our discord](https://discord.gg/reversedrooms) if you have any questions/issues
 
 ### Support
 If you want to support this project, feel free to [send a tip via boosty](https://boosty.to/xeondev/donate)
+
+### Credits
+- xeon
+- xavo95
