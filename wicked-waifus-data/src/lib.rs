@@ -124,10 +124,12 @@ pub fn load_all_json_data(base_path: &str) -> Result<(), LoadDataError> {
 }
 
 json_data! {
+    Achievement;
     AdventureTask;
     Area;
     BaseProperty;
     CalabashLevel;
+    CalabashDevelopReward;
     Damage;
     ExploreTools;
     FavorWord;

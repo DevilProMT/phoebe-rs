@@ -1,3 +1,5 @@
+pub use achievement::*;
+pub use calabash::*;
 pub use chat::*;
 pub use combat::*;
 pub use dummy::*;
@@ -16,6 +18,8 @@ pub use skill::*;
 pub use teleport::*;
 pub use tutorial::*;
 
+mod achievement;
+mod calabash;
 mod chat;
 mod combat;
 mod dummy;
@@ -103,6 +107,14 @@ macro_rules! handle_push {
 }
 
 handle_request! {
+
+    // Achievement
+    AchievementInfo;
+    UpdateAchievementInfo;
+
+    // Calabash
+    IllustratedInfo;
+
     // Chat  (TODO: Review TODOs)
     PrivateChat;
     PrivateChatOperate;
@@ -213,7 +225,6 @@ handle_request! {
     MonthCard;
     InfluenceInfo;
     ForgeInfo;
-    AchievementInfo;
     ExchangeReward;
     Liveness;
     WebSign;

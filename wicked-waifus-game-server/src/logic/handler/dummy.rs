@@ -30,7 +30,6 @@ dummy_handler! {
     MonthCard;
     InfluenceInfo;
     ForgeInfo;
-    AchievementInfo;
     ExchangeReward;
     Liveness;
     WebSign;

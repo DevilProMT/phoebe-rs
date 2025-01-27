@@ -5,11 +5,20 @@ use std::sync::Arc;
 
 pub use in_world_player::InWorldPlayer;
 use wicked_waifus_protocol_internal::{PlayerBasicData, PlayerRoleData, PlayerSaveData};
-use wicked_waifus_protocol::{AdventreTask, AdventureManualData, AdventureUpdateNotify, AdviceSettingNotify, ControlInfoNotify, EEntityType, EntityAddNotify, EntityConfigType, EntityPb, EntityRemoveInfo, EntityRemoveNotify, EntityState, ERemoveEntityType, FightFormationNotifyInfo, FightRoleInfo, FightRoleInfos, FormationRoleInfo, GroupFormation, InstDataNotify, ItemPkgOpenNotify, LivingStatus, MapUnlockFieldNotify, PbGetRoleListNotify, PlayerFightFormations, ProtocolUnit, RoleChangeUnlockNotify, UpdateFormationNotify, UpdateGroupFormationNotify};
+use wicked_waifus_protocol::{
+    AdventreTask, AdventureManualData, AdventureUpdateNotify, AdviceSettingNotify, ControlInfoNotify, 
+    EEntityType, EntityAddNotify, EntityConfigType, EntityPb, EntityRemoveInfo, EntityRemoveNotify, 
+    EntityState, ERemoveEntityType, FightFormationNotifyInfo, FightRoleInfo, FightRoleInfos, FormationRoleInfo, 
+    GroupFormation, InstDataNotify, ItemPkgOpenNotify, LivingStatus, MapUnlockFieldNotify, PbGetRoleListNotify, 
+    PlayerFightFormations, ProtocolUnit, RoleChangeUnlockNotify, UpdateFormationNotify, UpdateGroupFormationNotify,
+    CalabashMsgNotify, CalabashCfg, CalabashMsg, CalabashDevelopInfo, CalabashDevelopConditionState,
+};
 use wicked_waifus_protocol::message::Message;
 use wicked_waifus_commons::time_util;
-use wicked_waifus_data::base_property_data;
-use wicked_waifus_data::role_info_data;
+use wicked_waifus_data::{
+    base_property_data,role_info_data,
+    calabash_level_data, calabash_develop_reward_data,
+};
 
 use crate::{create_player_entity_pb, query_components};
 use crate::logic::{
@@ -78,7 +87,8 @@ impl Player {
         self.notify(ControlInfoNotify {
             forbid_list: vec![], // Disable function prohibition
         });
-        // CalabashMsgNotify + CalabashLevelRewardsNotify
+        self.notify(self.build_calabash_msg_notify());
+        // CalabashLevelRewardsNotify
         self.notify(self.func.build_func_open_notify());
         // RoleFavorListNotify
         self.notify(InstDataNotify {
@@ -422,8 +432,66 @@ impl Player {
                 .role_list
                 .iter()
                 .map(|(_, role)| role.to_protobuf())
-                //.take(3) // TODO: There is a bug we are investigating with several resonators, this is a workaround
+                .take(3) // TODO: There is a bug we are investigating with several resonators, this is a workaround
                 .collect(),
+        }
+    }
+
+    pub fn build_calabash_msg_notify(&self) -> CalabashMsgNotify {
+
+        let calabash_level_data = calabash_level_data::iter();
+    
+        let calabash_max_lvl = calabash_level_data
+            .clone()
+            .map(|data| data.level)
+            .max()
+            .unwrap_or(0);
+    
+        let calabash_condition = calabash_level_data
+            .clone()
+            .find(|data| data.level == calabash_max_lvl)
+            .map(|data| data.level_up_condition)
+            .unwrap_or(0);
+    
+        let calabash_max_exp = calabash_level_data
+            .clone()
+            .find(|data| data.level == calabash_max_lvl)
+            .map(|data| data.level_up_exp)
+            .unwrap_or(0);
+    
+        let catch_gain: std::collections::HashMap<i32, i32> = calabash_level_data
+            .clone()
+            .map(|data| (data.level, data.temp_catch_gain))
+            .collect();
+    
+        let calabash_develop_rewards: Vec<CalabashDevelopInfo> = calabash_develop_reward_data::iter()
+            .filter(|dev_reward| dev_reward.is_show)
+            .map(|dev_reward| CalabashDevelopInfo {
+                monster_id: dev_reward.monster_id,
+                unlock_conditions: dev_reward
+                    .develop_condition
+                    .iter()
+                    .map(|&condition_id| CalabashDevelopConditionState {
+                        condition_id,
+                        rewarded: true,
+                    })
+                    .collect(),
+            })
+            .collect();
+    
+        CalabashMsgNotify {
+            calabash_cfg: Some(CalabashCfg {
+                level_up_exp: calabash_max_exp,
+                level_up_condition: calabash_condition,
+                catch_gain,
+            }),
+            calabash_msg: Some(CalabashMsg {
+                level: calabash_max_lvl,
+                exp: calabash_max_exp,
+                unlocked_levels: calabash_level_data.clone().map(|data| data.level).collect(),
+                unlocked_develop_rewards: calabash_develop_rewards,
+                identify_guarantee_count: 0,
+            }),
         }
     }
 
