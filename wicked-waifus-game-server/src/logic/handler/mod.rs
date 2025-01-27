@@ -153,6 +153,7 @@ handle_request! {
     // Map
     DarkCoastDelivery;
     MapUnlockFieldInfo;
+    ExploreProgress;
     // LevelPlayStateListAsyncRequest // Example: "x9l": [{"inst_id": 902,"level_play_ids": [166700009,157700000]}]
 
     // Misc (TODO: Review this on_..., port some from go)
@@ -235,10 +236,10 @@ handle_request! {
     AdventureManual;
     MapTraceInfo;
     Tower;
-    ExploreProgress;
     ReportData;
     UpdateVoxelEnv;
     SimpleTrackReportAsync;
+    SynthesisInfo;
     TowerSeasonUpdate;
     
     EntityPatrolStop;
